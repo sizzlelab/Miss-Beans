@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file alias="system.js">system.js</file>
+        <file alias="media/bg_login.png">media/bg_login.png</file>
+        <file alias="media/button_close.png">media/button_close.png</file>
+        <file alias="media/button_go.png">media/button_go.png</file>
+        <file alias="media/button_new.png">media/button_new.png</file>
+        <file alias="media/button_next.png">media/button_next.png</file>
+        <file alias="media/button_prev.png">media/button_prev.png</file>
+        <file alias="media/beans/bean_red.png">media/beans/bean_red.png</file>
+        <file alias="Bean.qml">Bean.qml</file>
+        <file alias="Person.qml">Person.qml</file>
+        <file alias="media/beans/bean_green.png">media/beans/bean_green.png</file>
+        <file alias="media/beans/bean_yellow.png">media/beans/bean_yellow.png</file>
+        <file alias="media/beans/bean_blue.png">media/beans/bean_blue.png</file>
+        <file alias="main">Beans.qml</file>
+        <file alias="media/user_icon.png">media/user_icon.png</file>
+    </qresource>
+</RCC>
