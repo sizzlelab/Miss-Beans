@@ -13,7 +13,8 @@ Image {
 
     Text {
         text: parent.name
-        font.pointSize: 4
+        font.pointSize: 6
+        color: 'yellow'
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
     }

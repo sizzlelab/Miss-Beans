@@ -6,26 +6,30 @@
 
 QT       += core gui declarative mobility
 
-MOBILITY += bearer
+## We need network
+equals( QT_MAJOR_VERSION, 4 ) : greaterThan(QT_MINOR_VERSION, 6) {
+     QT+=network
+     #DEFINES += USE_BEARER_IN_QT_NETWORK
+} else {
+     CONFIG+=mobility
+     MOBILITY+=bearer
+}
 
-TARGET = BeanQt2
+## MOBILITY += bearer
+
+TARGET = MissBeans
 TEMPLATE = app
 
 ## qxmpp
 
-INCLUDEPATH += ../qxmpp/source
+INCLUDEPATH += ../qxmpp/src
 
 QT += network xml
 
 CONFIG += console debug_and_release
 
-CONFIG(debug, debug|release) {
-    QXMPP_LIB = QXmppClient_d
-    QXMPP_DIR = ../qxmpp/source/debug
-} else {
-    QXMPP_LIB = QXmppClient
-    QXMPP_DIR = ../qxmpp/source/release
-}
+QXMPP_LIB = qxmpp_d
+QXMPP_DIR = ../qxmpp/lib/
 
 LIBS += -L$$QXMPP_DIR -l$$QXMPP_LIB
 PRE_TARGETDEPS += $${QXMPP_DIR}/lib$${QXMPP_LIB}.a
@@ -51,5 +55,8 @@ RESOURCES += qml/qml.qrc
 
 symbian {
     TARGET.CAPABILITY = NetworkServices
+
+## Symbian spesific
+LIBS += -lesock
 }
 
