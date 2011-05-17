@@ -48,8 +48,8 @@ void XMPPCore::connectXMPP(const QString &server, const QString &username, const
 }
 
 void XMPPCore::clientReviceXMPP(const QXmppMessage &m) {
-    QString sender = m.getFrom();
-    QString message = m.getBody();
+    QString sender = m.from();
+    QString message = m.body();
     emit reciveXMPP(sender, message);
 }
 
