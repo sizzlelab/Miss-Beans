@@ -28,17 +28,22 @@ THE SOFTWARE.
 #include "QXmppClient.h"
 #include "QXmppMessage.h"
 #include "QXmppLogger.h"
-#include <QDebug>
 
 XMPPCore::XMPPCore(QObject *parent) : QXmppClient(parent)
 {
     // makes life easier
-    QXmppLogger::getLogger()->setLoggingType(QXmppLogger::QDEBUG);
+    this->logger()->setLoggingType( QXmppLogger::StdoutLogging );
 }
 
 void XMPPCore::connectXMPP(const QString &server, const QString &username, const QString &domain, const QString &password)
 {
-    this->connectToServer(server, username, password, domain);
+    QXmppConfiguration config = QXmppConfiguration();
+    config.setDomain( domain );
+    config.setHost( server );
+    config.setUser( username );
+    config.setPassword( password );
+    this->connectToServer( config );
+    // this->connectToServer(server, username, password, domain);
     connect(this, SIGNAL(messageReceived(const QXmppMessage&)),SLOT(clientReviceXMPP(const QXmppMessage&)));
 }
 
