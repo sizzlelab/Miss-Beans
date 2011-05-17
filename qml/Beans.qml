@@ -32,42 +32,85 @@ Rectangle {
                 source: './media/bg_login.png'
             }
 
-            TextInput {
-                id: username
+            Rectangle {
+                id: username_frame
+
                 anchors.left: parent.left
                 anchors.leftMargin: 75
                 anchors.top: parent.top
                 anchors.topMargin: 150
-                text: "username"
-                cursorVisible: true
+
+                height: username.height + 5
+                width: username.width + 10
+
+                border.width: 1
+                border.color: username.focus ? 'blue' : 'gray'
+
+                TextInput {
+                    id: username
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+
+                    text: "hiit.tester2"
+                }
             }
 
-            TextInput {
-                id: password
-                anchors.left: username.left
-                anchors.top: username.bottom
+            Rectangle {
+
+                id: password_frame
+
+                anchors.left: username_frame.left
+                anchors.top: username_frame.bottom
                 anchors.topMargin: 10
-                text: "password"
-                echoMode: "Password"
-                cursorVisible: true
-            }
 
+                height: password.height + 5
+                width: password.width + 10
+
+                border.width: 1
+                border.color: password.focus ? 'blue' : 'gray'
+
+                TextInput {
+
+                    id: password
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+
+                    text: "kissa123"
+                    echoMode: "Password"
+                }
+            }
             Image {
                 id: login
-                anchors.left: password.left
-                anchors.top: password.bottom
+                anchors.left: password_frame.left
+                anchors.top: password_frame.bottom
                 anchors.topMargin: 10
                 source: './media/button_go.png'
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+
+                        var hasAtSing = username.text.indexOf('@') >= 0;
+
                         flipable.flipped = true;
                         interactionPane.opacity = 1;
-                        System.init('matti.nelimarkka@gmail.com');
                         xmpp.server = "talk.google.com";
-                        xmpp.username = username.text + "@gmail.com";
-                        xmpp.password = password.text;
-                        xmpp.login();
+
+                        // demo case
+                        if( !hasAtSing ) {
+                            xmpp.username = username.text + "@gmail.com";
+                            xmpp.password = 'kissa123';
+                            var target = username.text == 'hiit.tester1' ? 'hiit.tester2' : 'hiit.tester1';
+                            target = target + "@gmail.com";
+                            System.init( target, 'Demo' );
+                            xmpp.login();
+                        } else {
+                            System.init('matti.nelimarkka@gmail.com');
+                            xmpp.username = username.text
+                            xmpp.password = password.text
+                            xmpp.login();
+                        }
                     }
                 }
             }
@@ -193,23 +236,24 @@ Rectangle {
                 Item {
                     id: wrapper
                     width: 80; height: 78
+                    visible : jid != username.text + "@gmail.com";
                     Column {
                         Image {
                             width: 80
                             height: 80
-                            source: portrait
+                            source: './media/user_icon.png'
                             id: icon
                             fillMode: Image.PreserveAspectFit
                             MouseArea {
                                 anchors.fill: parent
                                 onClicked: {
                                     userSelection.opacity = 0;
-                                    System.init( jid )
+                                    System.init( jid, name )
                                 }
                             }
                             Text {
                                 text: name
-                                font.pointSize: 4
+                                font.pointSize: 6
                                 anchors.top: parent.bottom
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -221,19 +265,34 @@ Rectangle {
             ListModel {
                 id: testData
                 ListElement {
+                    jid: "hiit.tester2@gmail.com"
+                    name: "Demo"
+                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/41397_684442320_7114_n.jpg"
+                }
+                ListElement {
+                    jid: "hiit.tester1@gmail.com"
+                    name: "Demo"
+                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/41397_684442320_7114_n.jpg"
+                }
+                ListElement {
                     jid: "matti.nelimarkka@gmail.com"
                     name: "Matti"
                     portrait: "http://profile.ak.fbcdn.net/profile-ak-snc1/profile5/1976/23/q744183082_7720.jpg"
                 }
                 ListElement {
-                    jid: "test1@labs.humanisti.fixme.fi"
-                    name: "Karo"
-                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs472.snc4/49624_619173239_5714_q.jpg"
+                    jid: "hiit.tester1@humanisti.fixme.fi"
+                    name: "Maija"
+                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/41397_684442320_7114_n.jpg"
                 }
                 ListElement {
-                    jid: "hhiit.tester1@gmail.com"
-                    name: "Kiira"
-                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/hs167.ash2/41486_100000314492845_7240_q.jpg"
+                    jid: "hiit.tester2@humanisti.fixme.fi"
+                    name: "Minna"
+                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/41397_684442320_7114_n.jpg"
+                }
+                ListElement {
+                    jid: "hiit.tester3@humanisti.fixme.fi"
+                    name: "Mikko"
+                    portrait: "http://profile.ak.fbcdn.net/hprofile-ak-snc4/41397_684442320_7114_n.jpg"
                 }
             }
 
@@ -244,7 +303,7 @@ Rectangle {
                 delegate: delegate
                 model: testData
                 cellWidth: 85
-                cellHeight: 85
+                cellHeight: 100
                 focus: true
             }
 
@@ -255,7 +314,7 @@ Rectangle {
     XMPP {
         id: xmpp
         onReciveMessage: {
-           System.handleIncoming ( from, message );
+            System.handleIncoming ( from, message );
         }
     }
 }

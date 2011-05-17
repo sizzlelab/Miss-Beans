@@ -5,6 +5,7 @@ import "./system.js" as System
 Image {
     width: 30
     height: 30
+    fillMode: Image.PreserveAspectFit
     property string name: '';
     source: './media/beans/bean_red.png'
     property int currentColor: 0
@@ -12,6 +13,24 @@ Image {
     property int idNumber
     property int dx : 0
     property int dy : 0
+
+    Behavior on x {
+//        PropertyAnimation {
+//            duration: 200
+//            easing.type: Easing.InQuart
+//        }
+        SmoothedAnimation { velocity: 200 }
+    }
+
+    Behavior on y {
+//        PropertyAnimation {
+//            duration: 200
+//            easing.type: Easing.InQuart
+//        }
+        SmoothedAnimation { velocity: 200 }
+    }
+
+
     MouseArea {
         anchors.fill: parent
         drag.target: parent

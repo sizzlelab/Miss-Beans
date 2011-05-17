@@ -26,7 +26,7 @@ var initialPositions = [
      return bean;
  }
 
- function init(who) {
+ function init(who, name1) {
      // check if canvas exists already
      if( canvas[who] ) {
          // move to first screen
@@ -45,11 +45,14 @@ var initialPositions = [
      // nasty, but allows defining things in .qml
      person.parent = beanCanvas;
      person.anchors.horizontalCenterOffset = canvasCount * width;
-     person.name = who;
+     person.name = name1;
      // move canvas to correct position
      beanCanvas.x = canvasCount * width;
      canvasCount++;
+     // for mockup use
+     return person;
  }
+
 
  // ASI SPESIFIC CODE
  function getFriends(username, password) {
@@ -61,7 +64,7 @@ var initialPositions = [
      var msg = msg.split('::');
      // check canvas exists
      if( !canvas[from] ) {
-        init(from);
+        init(from, 'Unknown');
      }
      // move
      if( msg[0] == 'move' ) {
